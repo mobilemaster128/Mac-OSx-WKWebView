@@ -46,7 +46,7 @@ class ViewController: NSViewController {
     }
     
     func webView(sender: WebView!, didReceiveTitle title: String!, forFrame frame: WebFrame!) {
-        windowTitle.stringValue = "ARCSOFT Studio"
+        windowTitle.stringValue = "ARCSOFT™ – Web Builder & Design"
     }
     
     func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
