@@ -12,7 +12,7 @@ import Foundation
 
 let secureURL = "https://www.arcsoft.io/secure/"
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, WebFrameLoadDelegate {
     
     @IBOutlet weak var webView: WebView!
     @IBOutlet weak var windowTitle: NSTextField!

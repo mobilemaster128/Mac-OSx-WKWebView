@@ -628,6 +628,10 @@
                                 <webPreferences key="preferences" defaultFontSize="12" defaultFixedFontSize="12">
                                     <nil key="identifier"/>
                                 </webPreferences>
+                                <connections>
+                                    <outlet property="UIDelegate" destination="XfG-lQ-9wD" id="47H-Du-2Sw"/>
+                                    <outlet property="frameLoadDelegate" destination="XfG-lQ-9wD" id="jwg-aU-bkb"/>
+                                </connections>
                             </webView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-8q-6B5">
                                 <rect key="frame" x="-2" y="616" width="1020" height="17"/>
