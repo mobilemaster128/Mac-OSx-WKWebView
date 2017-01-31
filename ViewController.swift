@@ -10,7 +10,7 @@ import Cocoa
 import WebKit
 import Foundation
 
-let secureURL = "https://www.arcsoft.io/secure/"
+let secureURL = "http://app.arcsoft.io"
 
 class ViewController: NSViewController, WebFrameLoadDelegate {
     
@@ -19,64 +19,65 @@ class ViewController: NSViewController, WebFrameLoadDelegate {
     @IBOutlet weak var networkError: NSImageView!
     @IBOutlet weak var retryButton: NSButton!
     
-    @IBAction func attemptReload(sender: NSButton) {
-        self.webView.mainFrame.loadRequest(NSURLRequest(URL: NSURL(string: secureURL)!))
+    @IBAction func attemptReload(_ sender: NSButton) {
+        self.webView.mainFrame.load(URLRequest(url: URL(string: secureURL)!))
     }
 
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Initial WebView Setup
         webView.layerUsesCoreImageFilters = true
-        WebPreferences.standardPreferences().allowsAirPlayForMediaPlayback = true
+        WebPreferences.standard().allowsAirPlayForMediaPlayback = true
         
         // Client Identifier
         let userAgent = "ARCSOFT Client v1.0"
         webView.customUserAgent = userAgent
-        defaults.registerDefaults(["UserAgent": userAgent])
-        defaults.registerDefaults(["User-Agent": userAgent])
+        defaults.register(defaults: ["UserAgent": userAgent])
+        defaults.register(defaults: ["User-Agent": userAgent])
 
         // Launch Secure Client
-        self.webView.mainFrame.loadRequest(NSURLRequest(URL: NSURL(string: secureURL)!))
+        self.webView.mainFrame.load(URLRequest(url: URL(string: secureURL)!))
         
         // Hide Network Error on Launch
-        retryButton.hidden = true
-        networkError.hidden = true
+        retryButton.isHidden = true
+        networkError.isHidden = true
     }
     
-    func webView(sender: WebView!, didReceiveTitle title: String!, forFrame frame: WebFrame!) {
+    func webView(_ sender: WebView!, didReceiveTitle title: String!, for frame: WebFrame!) {
         windowTitle.stringValue = "ARCSOFT™ – Web Builder & Design"
     }
     
-    func webView(sender: WebView!, didFinishLoadForFrame frame: WebFrame!) {
+    func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
         print("Load Successful")
-        retryButton.hidden = true
-        networkError.hidden = true
+        retryButton.isHidden = true
+        networkError.isHidden = true
     }
     
-    func webView(sender: WebView!, didStartProvisionalLoadForFrame frame: WebFrame!) {
-        retryButton.hidden = true
-        networkError.hidden = true
+    func webView(_ sender: WebView!, didStartProvisionalLoadFor frame: WebFrame!) {
+        retryButton.isHidden = true
+        networkError.isHidden = true
     }
     
-    func webView(sender: WebView!, didFailProvisionalLoadWithError error: NSError!, forFrame frame: WebFrame!) {
+    func webView(_ sender: WebView!, didFailProvisionalLoadWithError error: Error!, for frame: WebFrame!) {
         print("Failed to Load Client")
         // Present user with error.
-        retryButton.hidden = false
-        networkError.hidden = false
-        networkError.layer?.backgroundColor = NSColor(red:0.145, green:0.145, blue:0.157, alpha:1.0).CGColor
+        retryButton.isHidden = false
+        networkError.isHidden = false
+        networkError.layer?.backgroundColor = NSColor(red:0.11, green:0.16, blue:0.20, alpha:1.0).cgColor
+        
     }
     
-    func webView(sender: WebView!, runOpenPanelForFileButtonWithResultListener resultListener: WebOpenPanelResultListener!, allowMultipleFiles: Bool) {
+    func webView(_ sender: WebView!, runOpenPanelForFileButtonWithResultListener resultListener: WebOpenPanelResultListener!, allowMultipleFiles: Bool) {
         let openDialog = NSOpenPanel()
         if (openDialog.runModal() == NSModalResponseOK) {
-            let fileName: String = (openDialog.URL?.path)!
+            let fileName: String = (openDialog.url?.path)!
             resultListener.chooseFilename(fileName) // Use chooseFilenames for multiple files
         }
     }
 
-    override var representedObject: AnyObject? {
+    override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }

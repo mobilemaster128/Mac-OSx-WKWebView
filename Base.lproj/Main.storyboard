@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -59,6 +60,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
+                                        <menuItem title="Open Dashboard" id="mzq-Ps-4hZ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <segue destination="B8D-0N-5wS" kind="show" id="k7w-Hn-7qi"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Open Recent" id="tXI-mr-wws">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
@@ -552,6 +559,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                                     <items>
+                                        <menuItem title="Dashboard" id="qsM-d5-ous">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <segue destination="B8D-0N-5wS" kind="show" id="Or5-kG-GZy"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="gTV-Ch-q8I"/>
                                         <menuItem title="Minimize" keyEquivalent="m" id="OY7-WF-poV">
                                             <connections>
                                                 <action selector="performMiniaturize:" target="Ady-hI-5gd" id="VwT-WD-YPe"/>
@@ -636,13 +650,13 @@
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-8q-6B5">
                                 <rect key="frame" x="-2" y="616" width="1020" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="ARCSOFT™ – Web Builder &amp; Design" id="2E9-kZ-gKO">
-                                    <font key="font" metaFont="systemLight" size="13"/>
+                                    <font key="font" metaFont="system"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mf6-xW-XS5">
-                                <rect key="frame" x="0.0" y="60" width="1016" height="553"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1016" height="613"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NetworkError" id="NWH-nK-pTs"/>
                             </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fYN-S2-2Mq">
@@ -673,7 +687,7 @@
                             <constraint firstItem="mf6-xW-XS5" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Vao-W4-Xoa"/>
                             <constraint firstAttribute="trailing" secondItem="wHE-8q-6B5" secondAttribute="trailing" id="Yqg-NJ-hsY"/>
                             <constraint firstItem="fYN-S2-2Mq" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Zp0-xM-O8D"/>
-                            <constraint firstItem="fYN-S2-2Mq" firstAttribute="top" secondItem="mf6-xW-XS5" secondAttribute="bottom" id="qfI-5P-PJh"/>
+                            <constraint firstAttribute="bottom" secondItem="mf6-xW-XS5" secondAttribute="bottom" id="igE-9i-340"/>
                         </constraints>
                     </view>
                     <connections>
@@ -690,6 +704,9 @@
     </scenes>
     <resources>
         <image name="NetworkError" width="300" height="300"/>
-        <image name="RetryButton" width="133" height="40"/>
+        <image name="RetryButton" width="132.5" height="40"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="k7w-Hn-7qi"/>
+    </inferredMetricsTieBreakers>
 </document>
