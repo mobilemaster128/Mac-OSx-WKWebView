@@ -2,84 +2,51 @@
 //  ViewController.swift
 //  ARCSOFT
 //
-//  Created by Justin Bush on 2016-05-28.
-//  Copyright © 2016 Justin Bush. All rights reserved.
+//  Created by Sierra on 3/1/17.
+//  Copyright © 2017 Justin Bush. All rights reserved.
 //
 
 import Cocoa
 import WebKit
-import Foundation
 
 let secureURL = "http://app.arcsoft.io"
 
-class ViewController: NSViewController, WebFrameLoadDelegate {
+class ViewController: NSViewController, WKUIDelegate, WKNavigationDelegate {
     
-    @IBOutlet weak var webView: WebView!
-    @IBOutlet weak var windowTitle: NSTextField!
-    @IBOutlet weak var networkError: NSImageView!
-    @IBOutlet weak var retryButton: NSButton!
+    @IBOutlet weak var containerView: NSView!
+    @IBOutlet weak var progressView: NSProgressIndicator!
+    @IBOutlet weak var urlTextField: NSTextField!
     
-    @IBAction func attemptReload(_ sender: NSButton) {
-        self.webView.mainFrame.load(URLRequest(url: URL(string: secureURL)!))
-    }
-
-    let defaults = UserDefaults.standard
+    var webView: WKWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Initial WebView Setup
-        webView.layerUsesCoreImageFilters = true
-        WebPreferences.standard().allowsAirPlayForMediaPlayback = true
+        // Do view setup here.
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: self.containerView.bounds, configuration: webConfiguration)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        webView.navigationDelegate = self
+        webView.uiDelegate = self
+        webView.load(URLRequest(url: URL(string: secureURL)!))
         
-        // Client Identifier
-        let userAgent = "ARCSOFT Client v1.0"
-        webView.customUserAgent = userAgent
-        defaults.register(defaults: ["UserAgent": userAgent])
-        defaults.register(defaults: ["User-Agent": userAgent])
-
-        // Launch Secure Client
-        self.webView.mainFrame.load(URLRequest(url: URL(string: secureURL)!))
+        webView.autoresizingMask.insert(NSAutoresizingMaskOptions(rawValue: NSAutoresizingMaskOptions.viewWidthSizable.rawValue | NSAutoresizingMaskOptions.viewHeightSizable.rawValue))
+        containerView.addSubview(webView)
         
-        // Hide Network Error on Launch
-        retryButton.isHidden = true
-        networkError.isHidden = true
-    }
-    
-    func webView(_ sender: WebView!, didReceiveTitle title: String!, for frame: WebFrame!) {
-        windowTitle.stringValue = "ARCSOFT™ – Web Builder & Design"
-    }
-    
-    func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
-        print("Load Successful")
-        retryButton.isHidden = true
-        networkError.isHidden = true
-    }
-    
-    func webView(_ sender: WebView!, didStartProvisionalLoadFor frame: WebFrame!) {
-        retryButton.isHidden = true
-        networkError.isHidden = true
-    }
-    
-    func webView(_ sender: WebView!, didFailProvisionalLoadWithError error: Error!, for frame: WebFrame!) {
-        print("Failed to Load Client")
-        // Present user with error.
-        retryButton.isHidden = false
-        networkError.isHidden = false
-        networkError.layer?.backgroundColor = NSColor(red:0.11, green:0.16, blue:0.20, alpha:1.0).cgColor
+        urlTextField.stringValue = secureURL
         
+        progressView.startAnimation(nil)
     }
     
-    func webView(_ sender: WebView!, runOpenPanelForFileButtonWithResultListener resultListener: WebOpenPanelResultListener!, allowMultipleFiles: Bool) {
-        let openDialog = NSOpenPanel()
-        if (openDialog.runModal() == NSModalResponseOK) {
-            let fileName: String = (openDialog.url?.path)!
-            resultListener.chooseFilename(fileName) // Use chooseFilenames for multiple files
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {//"estimatedProgress" {
+            progressView.alphaValue = 1.0
+            progressView.doubleValue = self.webView.estimatedProgress * 100
+            
+            if self.webView.estimatedProgress >= 1.0 {
+                progressView.alphaValue = 0.0
+                progressView.doubleValue = 0.0
+            }
         }
     }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
+    
 }
